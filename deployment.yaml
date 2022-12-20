@@ -1,25 +1,25 @@
 kind: Deployment
 apiVersion: apps/v1
 metadata:
-  name: $APP_NAME-production
+  name: html-app
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: $APP_NAME
+      app: html-app
       role: frontend
       env: production
   template:
     metadata:
       name: frontend
       labels:
-        app: $APP_NAME
+        app: html-app
         role: frontend
         env: production
     spec:
       containers:
       - name: frontend
-        image: gcr.io/$PROJECT_ID/$APP_NAME:1.0.0
+        image: asia-south1-docker.pkg.dev/gcp-cloud-devops-368909/apps-repo/html-app:1.0.0
         imagePullPolicy: Always
         resources:
           limits:
@@ -35,7 +35,7 @@ spec:
 kind: Service
 apiVersion: v1
 metadata:
-  name: $APP_NAME
+  name: html-app
 spec:
   type: LoadBalancer
   ports:
@@ -44,5 +44,5 @@ spec:
     targetPort: 8080
     protocol: TCP
   selector:
-    app: $APP_NAME
+    app: html-app
     role: frontend
