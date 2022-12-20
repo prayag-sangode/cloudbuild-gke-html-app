@@ -1,0 +1,65 @@
+steps:
+# This step builds the container image.
+- name: 'gcr.io/cloud-builders/docker'
+  id: Build
+  args:
+  - 'build'
+  - '-t'
+  - 'us-central1-docker.pkg.dev/$PROJECT_ID/my-repository/hello-cloudbuild:$SHORT_SHA'
+  - '.'
+
+# This step pushes the image to Artifact Registry
+# The PROJECT_ID and SHORT_SHA variables are automatically
+# replaced by Cloud Build.
+- name: 'gcr.io/cloud-builders/docker'
+  id: Push
+  args:
+  - 'push'
+  - 'us-central1-docker.pkg.dev/$PROJECT_ID/my-repository/hello-cloudbuild:$SHORT_SHA'
+# [END cloudbuild]
+
+### Build
+
+#  - id: 'build'
+#    name: 'gcr.io/cloud-builders/docker'
+#    entrypoint: 'bash'
+#    args: 
+#      - '-c'
+#      - |
+#          docker build -t gcr.io/$PROJECT_ID/$APP_NAME:${SHORT_SHA} ./src
+
+
+### Test
+
+
+### Publish
+#  - id: 'publish'
+#    name: 'gcr.io/cloud-builders/docker'
+#    entrypoint: 'bash'
+#    args: 
+#      - '-c'
+#      - |
+#          docker push gcr.io/$PROJECT_ID/$APP_NAME:${SHORT_SHA}
+
+### Deploy
+  - id: 'deploy'
+    name: 'gcr.io/cloud-builders/gcloud'
+    env:
+      - 'KUBECONFIG=/kube/config'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+          PROJECT=$$(gcloud config get-value core/project)          
+
+          gcloud container clusters get-credentials "${_CLUSTER}" \
+            --project "$${PROJECT}" \
+            --zone "${_ZONE}"  
+
+
+          sed -i 's|gcr.io/$PROJECT_ID/$APP_NAME:.*|gcr.io/$PROJECT_ID/$APP_NAME:${SHORT_SHA}|' ./k8s/deployments/canary/*.yaml
+          
+          kubectl get ns production || kubectl create ns production
+          kubectl apply --namespace production --recursive -f k8s/deployments/canary
+          kubectl apply --namespace production --recursive -f k8s/services
+
