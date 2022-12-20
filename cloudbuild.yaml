@@ -7,7 +7,6 @@ steps:
   - '-t'
   - 'asia-south1-docker.pkg.dev/gcp-cloud-devops-368909/apps-repo/html-app:$SHORT_SHA'
   - '.'
-asia-south1-docker.pkg.dev/$PROJECT_ID/apps-repo/html-app
 # This step pushes the image to Artifact Registry
 # The PROJECT_ID and SHORT_SHA variables are automatically
 # replaced by Cloud Build.
