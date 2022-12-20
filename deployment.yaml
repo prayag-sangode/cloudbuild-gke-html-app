@@ -3,7 +3,7 @@ apiVersion: apps/v1
 metadata:
   name: html-app
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: html-app
@@ -27,10 +27,10 @@ spec:
             cpu: "100m"
         ports:
         - name: frontend
-          containerPort: 8080
+          containerPort: 80
         env:
           - name: PORT
-            value: "8080"
+            value: "80"
 ---
 kind: Service
 apiVersion: v1
@@ -41,7 +41,7 @@ spec:
   ports:
   - name: http
     port: 80
-    targetPort: 8080
+    targetPort: 80
     protocol: TCP
   selector:
     app: html-app
