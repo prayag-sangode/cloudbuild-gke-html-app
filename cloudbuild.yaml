@@ -5,9 +5,9 @@ steps:
   args:
   - 'build'
   - '-t'
-  - 'us-central1-docker.pkg.dev/gcp-cloud-devops-368909/apps-repo/html-app:$SHORT_SHA'
+  - 'asia-south1-docker.pkg.dev/gcp-cloud-devops-368909/apps-repo/html-app:$SHORT_SHA'
   - '.'
-
+asia-south1-docker.pkg.dev/$PROJECT_ID/apps-repo/html-app
 # This step pushes the image to Artifact Registry
 # The PROJECT_ID and SHORT_SHA variables are automatically
 # replaced by Cloud Build.
@@ -15,7 +15,7 @@ steps:
   id: Push
   args:
   - 'push'
-  - 'us-central1-docker.pkg.dev/gcp-cloud-devops-368909/apps-repo/html-app:$SHORT_SHA'
+  - 'asia-south1-docker.pkg.dev/gcp-cloud-devops-368909/apps-repo/html-app:$SHORT_SHA'
 # [END cloudbuild]
 
 ### Build
@@ -52,14 +52,12 @@ steps:
       - |
           PROJECT=$$(gcloud config get-value core/project)          
 
-          gcloud container clusters get-credentials "${_CLUSTER}" \
-            --project "$${PROJECT}" \
-            --zone "${_ZONE}"  
+          gcloud container clusters get-credentials "gke-cluster" \
+            --project "gcp-cloud-devops-368909" \
+            --zone "asia-south1"  
 
 
-          sed -i 's|gcr.io/gcp-cloud-devops-368909/html-app:.*|gcr.io/gcp-cloud-devops-368909/html-app:${SHORT_SHA}|' ./k8s/deployments/canary/*.yaml
+          sed -i 's|asia-south1-docker.pkg.dev/gcp-cloud-devops-368909/apps-repo/html-app:.*|asia-south1-docker.pkg.dev/gcp-cloud-devops-368909/apps-repo/html-app:${SHORT_SHA}|' deployment.yaml 
           
-          kubectl get ns production || kubectl create ns production
-          kubectl apply --namespace production --recursive -f k8s/deployments/canary
-          kubectl apply --namespace production --recursive -f k8s/services
+          kubectl apply -f deployment.yaml
 
