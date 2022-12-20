@@ -50,9 +50,9 @@ steps:
     - '-c'
     - |
          PROJECT=$$(gcloud config get-value core/project)          
-         gcloud container clusters get-credentials "gke-cluster" \
-           --project "gcp-cloud-devops-368909" \
-           --zone "asia-south1-b"  
+         gke-gcloud-auth-plugin --version
+         export USE_GKE_GCLOUD_AUTH_PLUGIN=True
+         gcloud container clusters get-credentials "gke-cluster" --project "gcp-cloud-devops-368909"  --zone "asia-south1-b"  
          sed -i 's|asia-south1-docker.pkg.dev/gcp-cloud-devops-368909/apps-repo/html-app:.*|asia-south1-docker.pkg.dev/gcp-cloud-devops-368909/apps-repo/html-app:${SHORT_SHA}|' deployment.yaml 
       
          kubectl apply -f deployment.yaml
