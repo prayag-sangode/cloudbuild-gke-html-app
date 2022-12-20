@@ -44,7 +44,7 @@ steps:
 - name: 'gcr.io/cloud-builders/gcloud'
   id: 'deploy'
   env:
-    - 'KUBECONFIG=/kube/config'
+    - 'KUBECONFIG=./kube/config'
   entrypoint: 'bash'
   args:
     - '-c'
