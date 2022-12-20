@@ -41,22 +41,22 @@ steps:
 #          docker push gcr.io/gcp-cloud-devops-368909/html-app:${SHORT_SHA}
 
 ### Deploy
- # - id: 'deploy'
- #   name: 'gcr.io/cloud-builders/gcloud'
- #   env:
- #     - 'KUBECONFIG=/kube/config'
- #   entrypoint: 'bash'
- #   args:
- #     - '-c'
- #     - |
-#          PROJECT=$$(gcloud config get-value core/project)          
+ - id: 'deploy'
+   name: 'gcr.io/cloud-builders/gcloud'
+   env:
+     - 'KUBECONFIG=/kube/config'
+   entrypoint: 'bash'
+   args:
+     - '-c'
+     - |
+          PROJECT=$$(gcloud config get-value core/project)          
 
-#          gcloud container clusters get-credentials "gke-cluster" \
-#            --project "gcp-cloud-devops-368909" \
-#            --zone "asia-south1"  
+          gcloud container clusters get-credentials "gke-cluster" \
+            --project "gcp-cloud-devops-368909" \
+            --zone "asia-south1"  
 
 
-#          sed -i 's|asia-south1-docker.pkg.dev/gcp-cloud-devops-368909/apps-repo/html-app:.*|asia-south1-docker.pkg.dev/gcp-cloud-devops-368909/apps-repo/html-app:${SHORT_SHA}|' deployment.yaml 
+          sed -i 's|asia-south1-docker.pkg.dev/gcp-cloud-devops-368909/apps-repo/html-app:.*|asia-south1-docker.pkg.dev/gcp-cloud-devops-368909/apps-repo/html-app:${SHORT_SHA}|' deployment.yaml 
           
-#          kubectl apply -f deployment.yaml
+          kubectl apply -f deployment.yaml
 
