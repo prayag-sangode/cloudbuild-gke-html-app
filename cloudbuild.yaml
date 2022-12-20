@@ -10,11 +10,11 @@ steps:
 # This step pushes the image to Artifact Registry
 # The PROJECT_ID and SHORT_SHA variables are automatically
 # replaced by Cloud Build.
-#- name: 'gcr.io/cloud-builders/docker'
-#  id: Push
-#  args:
-#  - 'push'
-#  - 'asia-south1-docker.pkg.dev/gcp-cloud-devops-368909/apps-repo/html-app:$SHORT_SHA'
+- name: 'gcr.io/cloud-builders/docker'
+  id: Push
+  args:
+  - 'push'
+  - 'asia-south1-docker.pkg.dev/gcp-cloud-devops-368909/apps-repo/html-app:$SHORT_SHA'
 # [END cloudbuild]
 
 ### Build
