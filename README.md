@@ -11,3 +11,15 @@
 - GKE to deploy html app
 - Artifact Registry to store docker images
 - CloudBuild to build CI/CD pipeline - trigger is created
+
+## Create GKE Cluster
+```sh
+gcloud container clusters create gke-cluster --num-nodes 1 --zone "asia-south1-b"
+gcloud container clusters list
+```
+
+## Create Artifact Registry
+```sh
+gcloud artifacts repositories create apps-repo --repository-format=docker --location=asia-south1-b --description="Docker repository for html app"
+gcloud artifacts repositories list
+```

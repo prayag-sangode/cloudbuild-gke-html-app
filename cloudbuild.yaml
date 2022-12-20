@@ -1,5 +1,4 @@
 steps:
-# This step builds the container image.
 - name: 'gcr.io/cloud-builders/docker'
   id: Build
   args:
@@ -7,44 +6,15 @@ steps:
   - '-t'
   - 'asia-south1-docker.pkg.dev/gcp-cloud-devops-368909/apps-repo/html-app:$SHORT_SHA'
   - '.'
-# This step pushes the image to Artifact Registry
-# The PROJECT_ID and SHORT_SHA variables are automatically
-# replaced by Cloud Build.
+
 - name: 'gcr.io/cloud-builders/docker'
   id: Push
   args:
   - 'push'
   - 'asia-south1-docker.pkg.dev/gcp-cloud-devops-368909/apps-repo/html-app:$SHORT_SHA'
-# [END cloudbuild]
 
-### Build
-
-#  - id: 'build'
-#    name: 'gcr.io/cloud-builders/docker'
-#    entrypoint: 'bash'
-#    args: 
-#      - '-c'
-#      - |
-#          docker build -t gcr.io/gcp-cloud-devops-368909/html-app:${SHORT_SHA} ./src
-
-
-### Test
-
-
-### Publish
-#  - id: 'publish'
-#    name: 'gcr.io/cloud-builders/docker'
-#    entrypoint: 'bash'
-#    args: 
-#      - '-c'
-#      - |
-#          docker push gcr.io/gcp-cloud-devops-368909/html-app:${SHORT_SHA}
-
-### Deploy
 - name: 'gcr.io/cloud-builders/gcloud'
-  id: 'deploy'
-  #env:
-  #  - 'KUBECONFIG=./kube/config'
+  id: Deploy
   entrypoint: 'bash'
   args:
     - '-c'
