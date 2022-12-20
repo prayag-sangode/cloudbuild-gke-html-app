@@ -2,7 +2,8 @@
 ## Author - Prayag Sangode
 
 ## Diagram
-![alt text] (https://cloud.google.com/static/kubernetes-engine/images/gitops-tutorial-pipeline-architecture.svg)
+
+<img src="https://github.com/prayag-sangode/cloudbuild-gke-html-app/blob/main/cloud-build-gke.PNG" alt="Alt text" title="CI/CD Pipeline using CloudBuild & GKEe">
 
 ## Services -
 
