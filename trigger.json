@@ -2,15 +2,11 @@
   "name": "main",
   "description": "Trigger canary build/deploy for any commit to the main branch",
 
-  "filename": "build/main-cloudbuild.yaml",
+  "filename": "main-cloudbuild.yaml",
   "triggerTemplate": {
-    "projectId": "$PROJECT_ID",
-    "repoName": "gke-progression",
+    "projectId": "gcp-cloud-devops-368909",
+    "repoName": "html-app",
     "branchName": "main"
   },
-   "substitutions": {
-    "_ZONE": "${ZONE}",
-    "_CLUSTER": "${CLUSTER}"
-  }
 
 }
