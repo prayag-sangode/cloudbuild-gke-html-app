@@ -5,7 +5,7 @@ steps:
   args:
   - 'build'
   - '-t'
-  - 'us-central1-docker.pkg.dev/$PROJECT_ID/my-repository/hello-cloudbuild:$SHORT_SHA'
+  - 'us-central1-docker.pkg.dev/gcp-cloud-devops-368909/apps-repo/html-app:$SHORT_SHA'
   - '.'
 
 # This step pushes the image to Artifact Registry
@@ -15,7 +15,7 @@ steps:
   id: Push
   args:
   - 'push'
-  - 'us-central1-docker.pkg.dev/$PROJECT_ID/my-repository/hello-cloudbuild:$SHORT_SHA'
+  - 'us-central1-docker.pkg.dev/gcp-cloud-devops-368909/apps-repo/html-app:$SHORT_SHA'
 # [END cloudbuild]
 
 ### Build
@@ -26,7 +26,7 @@ steps:
 #    args: 
 #      - '-c'
 #      - |
-#          docker build -t gcr.io/$PROJECT_ID/$APP_NAME:${SHORT_SHA} ./src
+#          docker build -t gcr.io/gcp-cloud-devops-368909/html-app:${SHORT_SHA} ./src
 
 
 ### Test
@@ -39,7 +39,7 @@ steps:
 #    args: 
 #      - '-c'
 #      - |
-#          docker push gcr.io/$PROJECT_ID/$APP_NAME:${SHORT_SHA}
+#          docker push gcr.io/gcp-cloud-devops-368909/html-app:${SHORT_SHA}
 
 ### Deploy
   - id: 'deploy'
@@ -57,7 +57,7 @@ steps:
             --zone "${_ZONE}"  
 
 
-          sed -i 's|gcr.io/$PROJECT_ID/$APP_NAME:.*|gcr.io/$PROJECT_ID/$APP_NAME:${SHORT_SHA}|' ./k8s/deployments/canary/*.yaml
+          sed -i 's|gcr.io/gcp-cloud-devops-368909/html-app:.*|gcr.io/gcp-cloud-devops-368909/html-app:${SHORT_SHA}|' ./k8s/deployments/canary/*.yaml
           
           kubectl get ns production || kubectl create ns production
           kubectl apply --namespace production --recursive -f k8s/deployments/canary
